@@ -1,17 +1,19 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
 
-<div class="mb-3">
-  <h4 class="mb-0">Daftar Approval</h4>
-  <div class="text-muted small">Booking yang menunggu persetujuan Anda.</div>
+<div class="d-flex justify-content-between align-items-end mb-3">
+  <div>
+    <h3 class="mb-1 fw-semibold">Approvals</h3>
+    <div class="small-muted">Booking yang menunggu persetujuan Anda.</div>
+  </div>
 </div>
 
-<div class="card shadow-sm">
+<div class="card">
   <div class="card-body">
-    <?php if (empty($bookings)): ?>
-      <p class="mb-0 text-muted">Tidak ada booking yang menunggu persetujuan.</p>
+    <?php if(empty($bookings)): ?>
+      <div class="text-center small-muted py-4">Tidak ada booking yang menunggu approval.</div>
     <?php else: ?>
-      <table class="table table-bordered table-striped align-middle mb-0">
+      <table class="table table-striped table-bordered align-middle mb-0">
         <thead>
           <tr>
             <th style="width:70px;">ID</th>
@@ -19,7 +21,7 @@
             <th>Kendaraan</th>
             <th style="width:140px;">Driver</th>
             <th>Tujuan</th>
-            <th style="width:180px;">Aksi</th>
+            <th style="width:190px;">Aksi</th>
           </tr>
         </thead>
         <tbody>

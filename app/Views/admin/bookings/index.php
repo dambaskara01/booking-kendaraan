@@ -1,20 +1,20 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-end mb-3">
   <div>
-    <h4 class="mb-0">List Booking</h4>
-    <div class="text-muted small">Daftar booking kendaraan dan status approval.</div>
+    <h3 class="mb-1 fw-semibold">Bookings</h3>
+    <div class="small-muted">Daftar booking kendaraan dan status approval.</div>
   </div>
   <div class="d-flex gap-2">
     <a class="btn btn-success" href="/admin/bookings/export">Export CSV</a>
-    <a class="btn btn-primary" href="/admin/bookings/create">+ Buat Booking</a>
+    <a class="btn btn-brand text-white" href="/admin/bookings/create">+ Buat Booking</a>
   </div>
 </div>
 
-<div class="card shadow-sm">
+<div class="card">
   <div class="card-body">
-    <table class="table table-bordered table-striped align-middle mb-0">
+    <table class="table table-striped table-bordered align-middle mb-0">
       <thead>
         <tr>
           <th style="width:70px;">ID</th>
@@ -22,12 +22,12 @@
           <th>Kendaraan</th>
           <th style="width:140px;">Driver</th>
           <th>Tujuan</th>
-          <th style="width:260px;">Status</th>
+          <th style="width:280px;">Status</th>
         </tr>
       </thead>
       <tbody>
-        <?php if (empty($bookings)): ?>
-          <tr><td colspan="6" class="text-center text-muted">Belum ada booking.</td></tr>
+        <?php if(empty($bookings)): ?>
+          <tr><td colspan="6" class="text-center small-muted">Belum ada booking.</td></tr>
         <?php endif; ?>
 
         <?php foreach ($bookings as $b): ?>
@@ -38,11 +38,10 @@
             <td><?= esc($b['driver_name']) ?></td>
             <td><?= esc($b['purpose']) ?></td>
             <td>
-              <div class="d-flex flex-wrap gap-2 align-items-center">
-                <?= status_badge($b['final_status']) ?>
-                <span class="text-muted small">L1:</span><?= status_badge($b['status_level1']) ?>
-                <span class="text-muted small">L2:</span><?= status_badge($b['status_level2']) ?>
-              </div>
+              <span class="badge <?= $b['final_status']=='APPROVED' ? 'text-bg-success' : ($b['final_status']=='REJECTED' ? 'text-bg-danger' : 'text-bg-warning') ?>">
+                <?= esc($b['final_status']) ?>
+              </span>
+              <span class="small-muted ms-2">L1: <?= esc($b['status_level1']) ?> • L2: <?= esc($b['status_level2']) ?></span>
             </td>
           </tr>
         <?php endforeach; ?>

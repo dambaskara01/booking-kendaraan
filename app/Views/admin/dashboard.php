@@ -1,12 +1,15 @@
 <?= $this->extend('layout/main') ?>
 <?= $this->section('content') ?>
 
-<div class="mb-3">
-  <h4 class="mb-0">Dashboard Pemakaian Kendaraan</h4>
-  <div class="text-muted small">Ringkasan jumlah booking per bulan.</div>
+<div class="d-flex justify-content-between align-items-end mb-3">
+  <div>
+    <h3 class="mb-1 fw-semibold">Dashboard</h3>
+    <div class="small-muted">Ringkasan jumlah booking per bulan.</div>
+  </div>
 </div>
 
-<div class="card shadow-sm">
+<div class="card">
+  <div class="card-header fw-semibold">Total Booking per Bulan</div>
   <div class="card-body">
     <canvas id="chart"></canvas>
   </div>
@@ -19,13 +22,7 @@
 
   new Chart(document.getElementById('chart'), {
     type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Total Booking per Bulan',
-        data: data
-      }]
-    }
+    data: { labels, datasets: [{ label: 'Total Booking', data }] }
   });
 </script>
 
