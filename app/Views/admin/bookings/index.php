@@ -1,56 +1,54 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin - Bookings</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-<div class="container py-4">
+<?= $this->extend('layout/main') ?>
+<?= $this->section('content') ?>
 
-  <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
     <h4 class="mb-0">List Booking</h4>
-    <div>
-      <a class="btn btn-success" href="/admin/bookings/export">Export CSV</a>
-      <a class="btn btn-primary" href="/admin/bookings/create">+ Buat Booking</a>
-      <a class="btn btn-outline-secondary" href="/logout">Logout</a>
-    </div>
+    <div class="text-muted small">Daftar booking kendaraan dan status approval.</div>
   </div>
-
-  <?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
-  <?php endif; ?>
-
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tanggal</th>
-            <th>Kendaraan</th>
-            <th>Driver</th>
-            <th>Tujuan</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($bookings as $b): ?>
-            <tr>
-              <td><?= $b['id'] ?></td>
-              <td><?= $b['booking_date'] ?></td>
-              <td><?= $b['vehicle_name'] ?> (<?= $b['plate_number'] ?>)</td>
-              <td><?= $b['driver_name'] ?></td>
-              <td><?= $b['purpose'] ?></td>
-              <td><?= $b['final_status'] ?> (L1: <?= $b['status_level1'] ?>, L2: <?= $b['status_level2'] ?>)</td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-success" href="/admin/bookings/export">Export CSV</a>
+    <a class="btn btn-primary" href="/admin/bookings/create">+ Buat Booking</a>
   </div>
-
 </div>
-</body>
-</html>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <table class="table table-bordered table-striped align-middle mb-0">
+      <thead>
+        <tr>
+          <th style="width:70px;">ID</th>
+          <th style="width:140px;">Tanggal</th>
+          <th>Kendaraan</th>
+          <th style="width:140px;">Driver</th>
+          <th>Tujuan</th>
+          <th style="width:260px;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if (empty($bookings)): ?>
+          <tr><td colspan="6" class="text-center text-muted">Belum ada booking.</td></tr>
+        <?php endif; ?>
+
+        <?php foreach ($bookings as $b): ?>
+          <tr>
+            <td><?= $b['id'] ?></td>
+            <td><?= date('d M Y', strtotime($b['booking_date'])) ?></td>
+            <td><?= esc($b['vehicle_name']) ?> (<?= esc($b['plate_number']) ?>)</td>
+            <td><?= esc($b['driver_name']) ?></td>
+            <td><?= esc($b['purpose']) ?></td>
+            <td>
+              <div class="d-flex flex-wrap gap-2 align-items-center">
+                <?= status_badge($b['final_status']) ?>
+                <span class="text-muted small">L1:</span><?= status_badge($b['status_level1']) ?>
+                <span class="text-muted small">L2:</span><?= status_badge($b['status_level2']) ?>
+              </div>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<?= $this->endSection() ?>
